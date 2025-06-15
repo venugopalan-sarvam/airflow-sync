@@ -1,26 +1,28 @@
-from airflow import DAG
-from airflow.operators.python import PythonOperator
 from datetime import datetime
-import os
+from airflow import DAG
+from airflow.operators.bash import BashOperator
+from hellocall.hello import hello
 
-def list_files_and_folders():
-    root_dir = '/opt/airflow/git/airflow-sync.git/dags'
-    for dirpath, dirnames, filenames in os.walk(root_dir):
-        print(f"Directory: {dirpath}")
-        if dirnames:
-            print(f"  Subdirectories: {dirnames}")
-        if filenames:
-            print(f"  Files: {filenames}")
-        print("----")
+default_args = {
+    'owner': 'airflow',
+    'depends_on_past': False,
+    'start_date': datetime(2023, 5, 1),
+    'email_on_failure': False,
+    'email_on_retry': False,
+    'retries': 1
+}
 
 with DAG(
-    'list_airflow_dags_folder',
+    'dags-greeting',
+    default_args=default_args,
+    description='A simple greeting DAG',
     schedule_interval=None,
-    start_date=datetime(2023, 1, 1),
-    catchup=False,
-    tags=['debug']
+    catchup=False
 ) as dag:
-    list_files_task = PythonOperator(
-        task_id='list_files_and_folders_task',
-        python_callable=list_files_and_folders
+
+    hello_task = BashOperator(
+        task_id='hello_world_task',
+        bash_command=f'echo {hello("Venu")}'
     )
+
+    hello_task
