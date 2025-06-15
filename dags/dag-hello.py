@@ -1,7 +1,7 @@
 from datetime import datetime
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from hellocall.hello import hello
+from dags.hellocall.hello import hello
 
 default_args = {
     'owner': 'airflow',
