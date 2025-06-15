@@ -1,7 +1,6 @@
-from datetime import datetime
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from hellocall.hello import hello
+from datetime import datetime
 
 default_args = {
     'owner': 'airflow',
@@ -22,7 +21,7 @@ with DAG(
 
     hello_task = BashOperator(
         task_id='hello_world_task',
-        bash_command=f'echo {hello("Venu")}'
+        bash_command='python /opt/airflow/git/airflow-sync.git/dags/hellocall/hello.py'
     )
 
     hello_task
