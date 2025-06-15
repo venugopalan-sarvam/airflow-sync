@@ -1,9 +1,9 @@
 from datetime import datetime
 import sys
-sys.path.append('/opt/airflow/git/airflow-sync.git')
+sys.path.append('/opt/airflow/git/airflow-sync.git/dags')
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from .hellocall.hello import hello
+from hellocall.hello import hello
 
 default_args = {
     'owner': 'airflow',
